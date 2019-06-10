@@ -31,11 +31,15 @@ const mainController = (path) => {
       port.on('error', error => eventEmitter.emit('error', error));
       port.on('disconnect', () => eventEmitter.emit('disconnect'));
       port.on('close', () => eventEmitter.emit('close'));
-      port.on('open', onPortOpen.bind(null, resolve));
+      port.on('open', onPortOpen);
 
       parser.on('data', (data) => {
         try {
           const parsedData = JSON.parse(data);
+
+          if (parsedData.status === 'ready') {
+            return resolve();
+          }
 
           eventEmitter.emit('data', parsedData);
 
@@ -95,26 +99,35 @@ const mainController = (path) => {
 
   /**
    * Set LED color
+   * @param {Number} red
+   * @param {Number} green
+   * @param {Number} blue
    * @return {Promise}
    */
   function setLedColor(red, green, blue) {
     return new Promise((resolve) => {
-      port.write([0xA5, 0x35, 0xFF, 0x00, 0xFF]);
+      port.write(['0xA5', '0x35', numberToHex(red), numberToHex(green), numberToHex(blue)]);
       resolve();
     });
   }
 
   /**
-   * Port open event handler
-   * @param {Function} resolve
+   * Returns a hex value based on the given number
+   * @param {Number} value
+   * @return {String}
    */
-  function onPortOpen(resolve) {
+  function numberToHex(value) {
+    return `0x${('00' + value.toString(16)).substr(-2).toUpperCase()}`;
+  }
+
+  /**
+   * Port open event handler
+   */
+  function onPortOpen() {
     port.flush(error => {
       if (error) {
         eventEmitter.emit('error', error);
       }
-
-      resolve();
     });
   }
 
