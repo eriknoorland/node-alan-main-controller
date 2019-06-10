@@ -35,7 +35,17 @@ const mainController = (path) => {
 
       parser.on('data', (data) => {
         try {
-          eventEmitter.emit('data', JSON.parse(data));
+          const parsedData = JSON.parse(data);
+
+          eventEmitter.emit('data', parsedData);
+
+          // if (parsedData.heading) {
+          //   eventEmitter.emit('bno055_data', parsedData);
+          // }
+
+          // if (parsedData.?) {
+          //   eventEmitter.emit('encoder_data', parsedData);
+          // }
         } catch(error) {}
       });
     });
@@ -104,7 +114,6 @@ const mainController = (path) => {
         eventEmitter.emit('error', error);
       }
 
-      state = State.IDLE;
       resolve();
     });
   }

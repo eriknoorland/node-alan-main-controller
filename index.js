@@ -1,1 +1,1 @@
-require('./src/mainController');
+module.exports = require('./src/mainController');
