@@ -1,0 +1,19 @@
+{
+  "name": "alan-main-controller",
+  "version": "0.0.1",
+  "description": "A Node module to communicate with the Arduino robot main controller (see https://github.com/eriknoorland/arduino-alan-main-controller).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eriknoorland/node-alan-main-controller.git"
+  },
+  "author": "Erik Noorland <mail@eriknoorland.nl> (eriknoorland.nl)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eriknoorland/node-alan-main-controller/issues"
+  },
+  "homepage": "https://github.com/eriknoorland/node-alan-main-controller#readme"
+}
