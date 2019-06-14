@@ -43,13 +43,6 @@ const mainController = (path) => {
 
           eventEmitter.emit('data', parsedData);
 
-          // if (parsedData.heading) {
-          //   eventEmitter.emit('bno055_data', parsedData);
-          // }
-
-          // if (parsedData.?) {
-          //   eventEmitter.emit('encoder_data', parsedData);
-          // }
         } catch(error) {}
       });
     });
@@ -57,22 +50,24 @@ const mainController = (path) => {
 
   /**
    * Forward
+   * @param {Number} speed
    * @return {Promise}
    */
-  function moveForward() {
+  function moveForward(speed) {
     return new Promise((resolve) => {
-      port.write([0xA5, 0x10, 0x10]);
+      port.write(['0xA5', '0x10', numberToHex(speed)]);
       resolve();
     });
   }
 
   /**
    * Backward
+   * @param {Number} speed
    * @return {Promise}
    */
-  function moveBackward() {
+  function moveBackward(speed) {
     return new Promise((resolve) => {
-      port.write([0xA5, 0x15, 0x10]);
+      port.write(['0xA5', '0x15', numberToHex(speed)]);
       resolve();
     });
   }
@@ -98,6 +93,17 @@ const mainController = (path) => {
   }
 
   /**
+   * Stop
+   * @return {Promise}
+   */
+  function stop() {
+    return new Promise((resolve) => {
+      port.write([0xA5, 0x35]);
+      resolve();
+    });
+  }
+
+  /**
    * Set LED color
    * @param {Number} red
    * @param {Number} green
@@ -106,7 +112,7 @@ const mainController = (path) => {
    */
   function setLedColor(red, green, blue) {
     return new Promise((resolve) => {
-      port.write(['0xA5', '0x35', numberToHex(red), numberToHex(green), numberToHex(blue)]);
+      port.write(['0xA5', '0x40', numberToHex(red), numberToHex(green), numberToHex(blue)]);
       resolve();
     });
   }
@@ -139,6 +145,7 @@ const mainController = (path) => {
     moveBackward,
     rotate,
     turn,
+    stop,
     setLedColor,
     on: eventEmitter.on.bind(eventEmitter),
   };
