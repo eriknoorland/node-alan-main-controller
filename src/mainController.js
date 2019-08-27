@@ -254,6 +254,7 @@ const mainController = (path) => {
     disableTicks,
     setLedColor,
     on: eventEmitter.on.bind(eventEmitter),
+    off: eventEmitter.off.bind(eventEmitter),
   };
 };
 
