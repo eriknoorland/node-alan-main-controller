@@ -92,34 +92,17 @@ const mainController = (path) => {
   }
 
   /**
-   * Rotate left
-   * @param {Number} speed
-   * @param {Number} angle
-   * @return {Promise}
-   */
-  function rotateLeft(speed, angle) {
-    return rotate(speed, angle, 0);
-  }
-
-  /**
-   * Rotate right
-   * @param {Number} speed
-   * @param {Number} angle
-   * @return {Promise}
-   */
-  function rotateRight(speed, angle) {
-    return rotate(speed, angle, 1);
-  }
-
-  /**
    * Rotate
    * @param {Number} speed
-   * @param {Number} angle
-   * @param {String} direction
+   * @param {Number} angle [-180 / 180]
    * @return {Promise}
    */
-  function rotate(speed, angle, direction = 0) {
-    writeToSerialPort(port, [0xA5, 0x20, numberToHex(speed), numberToHex(angle), numberToHex(direction)]);
+  function rotate(speed, angle) {
+    const speedByte = numberToHex(speed);
+    const angleByte = numberToHex(Math.abs(angle));
+    const directionByte = numberToHex(angle < 0 ? 0 : 1);
+
+    writeToSerialPort(port, [0xA5, 0x20, speedByte, angleByte, directionByte]);
 
     return new Promise((resolve) => {
       const onTargetReached = () => {
@@ -132,37 +115,19 @@ const mainController = (path) => {
   }
 
   /**
-   * Turn left
-   * @param {Number} speed
-   * @param {Number} angle
-   * @param {Number} radius
-   * @return {Promise}
-   */
-  function turnLeft(speed, angle, radius) {
-    return rotate(speed, angle, radius, 0);
-  }
-
-  /**
-   * Turn right
-   * @param {Number} speed
-   * @param {Number} angle
-   * @param {Number} radius
-   * @return {Promise}
-   */
-  function turnRight(speed, angle, radius) {
-    return rotate(speed, angle, radius, 1);
-  }
-
-  /**
    * Turn
    * @param {Number} speed
-   * @param {Number} angle
+   * @param {Number} angle [-180 / 180]
    * @param {Number} radius
-   * @param {String} direction
    * @return {Promise}
    */
-  function turn(speed, angle, radius, direction = 0) {
-    writeToSerialPort(port, [0xA5, 0x25, numberToHex(speed), numberToHex(angle), numberToHex(radius), numberToHex(direction)]);
+  function turn(speed, angle, radius) {
+    const speedByte = numberToHex(speed);
+    const angleByte = numberToHex(Math.abs(angle));
+    const radiusByte = numberToHex(radius);
+    const directionByte = numberToHex(angle < 0 ? 0 : 1);
+
+    writeToSerialPort(port, [0xA5, 0x25, speedByte, angleByte, radiusByte, directionByte]);
 
     return new Promise((resolve) => {
       const onTargetReached = () => {
@@ -244,10 +209,8 @@ const mainController = (path) => {
     init,
     moveForward,
     moveBackward,
-    rotateLeft,
-    rotateRight,
-    turnLeft,
-    turnRight,
+    rotate,
+    turn,
     drive,
     stop,
     enableTicks,
