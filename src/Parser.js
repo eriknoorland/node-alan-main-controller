@@ -1,9 +1,8 @@
 const Transform = require('stream').Transform;
 const cobs = require('cobs');
-const parseDecToBinary = require('./utils/parseDecToBinary');
-const parseBattery = require('./utils/parseBattery');
-const parseTicks = require('./utils/parseTicks');
-const parseImu = require('./utils/parseImu');
+const parseBattery = require('./parsers/battery');
+const parseTicks = require('./parsers/odometry');
+const parseImu = require('./parsers/imu');
 const numDescriptorBytes = 4;
 
 /**

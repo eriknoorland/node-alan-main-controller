@@ -1,7 +1,7 @@
-const parseDecToBinary = require('./parseDecToBinary');
+const parseDecToBinary = require('../utils/parseDecToBinary');
 
 /**
- * 
+ *
  * @param {Array} data
  * @return {Object}
  */
